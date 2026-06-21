@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Asset Details</h2>
+
+<div class="card p-4">
+
+    <h4>{{ asset.item_name }}</h4>
+
+    <hr>
+
+    <p>
+        <strong>Item ID:</strong>
+        {{ asset.item_id }}
+    </p>
+
+    <p>
+        <strong>Category:</strong>
+        {{ asset.category }}
+    </p>
+
+    <p>
+        <strong>Department:</strong>
+        {{ asset.department }}
+    </p>
+
+    <p>
+        <strong>Building:</strong>
+        {{ asset.building }}
+    </p>
+
+    <p>
+        <strong>Purchase Date:</strong>
+        {{ asset.purchase_date }}
+    </p>
+
+</div>
+
+<br>
+
+<h3>Complaint History</h3>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>User</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Date</th>
+    </tr>
+
+    {% for complaint in complaints %}
+
+    <tr>
+        <td>{{ complaint.user.first_name }}</td>
+        <td>{{ complaint.description }}</td>
+        <td>{{ complaint.status }}</td>
+        <td>{{ complaint.created_at }}</td>
+    </tr>
+
+    {% empty %}
+
+    <tr>
+        <td colspan="4">
+            No complaints found.
+        </td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

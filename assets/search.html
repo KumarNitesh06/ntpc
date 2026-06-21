@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Search Assets</h2>
+
+<form method="GET">
+
+<div class="row">
+
+<div class="col-md-4">
+<select name="department" class="form-control">
+
+<option value="">
+All Departments
+</option>
+
+{% for department in departments %}
+<option value="{{ department.id }}">
+{{ department.name }}
+</option>
+{% endfor %}
+
+</select>
+</div>
+
+<div class="col-md-4">
+<select name="building" class="form-control">
+
+<option value="">
+All Buildings
+</option>
+
+{% for building in buildings %}
+<option value="{{ building.id }}">
+{{ building.name }}
+</option>
+{% endfor %}
+
+</select>
+</div>
+
+<div class="col-md-4">
+<button class="btn btn-primary">
+Search
+</button>
+</div>
+
+</div>
+
+</form>
+
+<br>
+
+<table class="table table-bordered">
+
+<tr>
+<th>Item ID</th>
+<th>Name</th>
+<th>Category</th>
+<th>Department</th>
+<th>Building</th>
+</tr>
+
+{% for asset in assets %}
+
+<tr>
+<td>{{ asset.item_id }}</td>
+<td>{{ asset.item_name }}</td>
+<td>{{ asset.category }}</td>
+<td>{{ asset.department }}</td>
+<td>{{ asset.building }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

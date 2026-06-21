@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Raise Complaint</h1>
+
+<form method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label>Asset</label>
+        {{ form.asset }}
+    </div>
+
+    <div class="mb-3">
+        <label>Description</label>
+        {{ form.description }}
+    </div>
+
+    <div class="mb-3">
+        <label>Photo</label>
+        {{ form.photo }}
+    </div>
+
+    <button type="submit" class="btn btn-danger">
+        Submit Complaint
+    </button>
+
+</form>
+
+{% endblock %}

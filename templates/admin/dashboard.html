@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Admin Dashboard</h2>
+
+
+<div class="row">
+
+    <div class="col-md-4 mb-3">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5>Total Assets</h5>
+                <h2>{{ total_assets }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5>Departments</h5>
+                <h2>{{ total_departments }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <h5>Buildings</h5>
+                <h2>{{ total_buildings }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="col-md-4 mb-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5>Total Complaints</h5>
+                <h2>{{ total_complaints }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card text-white bg-danger">
+            <div class="card-body">
+                <h5>Pending</h5>
+                <h2>{{ pending_complaints }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5>Resolved</h5>
+                <h2>{{ resolved_complaints }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<hr>
+
+<a href="/admin/"
+   class="btn btn-dark">
+   Django Admin
+</a>
+
+<a href="/complaints/admin/"
+   class="btn btn-danger">
+   Manage Complaints
+</a>
+<a href="/assets/admin-assets/"
+   class="btn btn-success">
+
+   Manage Assets
+
+</a>
+<a href="{% url 'department_list' %}"
+   class="btn btn-primary">
+
+   Manage Departments
+
+</a>
+<a href="{% url 'building_list' %}"
+   class="btn btn-info">
+
+   Manage Buildings
+
+</a>
+<a href="{% url 'logout' %}"
+   class="btn btn-danger float-end">
+   Logout
+</a>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    
+
+    <h2>Manage Complaints</h2>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Asset</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Photo</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for complaint in complaints %}
+            <tr>
+                <td>{{ complaint.user.first_name }}</td>
+                <td>{{ complaint.asset.item_name }}</td>
+                <td>{{ complaint.description }}</td>
+                <td>{{ complaint.status }}</td>
+
+                <td>
+                    {% if complaint.photo %}
+                        <a href="{{ complaint.photo.url }}" target="_blank">
+                            View
+                        </a>
+                    {% else %}
+                        No Photo
+                    {% endif %}
+                </td>
+
+                <td>
+                    <a href="{% url 'update_status' complaint.id %}"
+                       class="btn btn-warning">
+                        Update
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

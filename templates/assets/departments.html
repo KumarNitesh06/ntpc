@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Departments</h2>
+
+<a href="{% url 'add_department' %}"
+   class="btn btn-success mb-3">
+
+   Add Department
+
+</a>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Name</th>
+        <th>Action</th>
+    </tr>
+
+    {% for department in departments %}
+
+    <tr>
+
+        <td>{{ department.name }}</td>
+
+        <td>
+
+            <a href="{% url 'delete_department' department.id %}"
+               class="btn btn-danger btn-sm">
+
+               Delete
+
+            </a>
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

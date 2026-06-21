@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Buildings</h2>
+
+<a href="{% url 'add_building' %}"
+   class="btn btn-success mb-3">
+
+   Add Building
+
+</a>
+
+<table class="table table-bordered">
+
+    <tr>
+        <th>Name</th>
+        <th>Action</th>
+    </tr>
+
+    {% for building in buildings %}
+
+    <tr>
+
+        <td>{{ building.name }}</td>
+
+        <td>
+
+            <a href="{% url 'delete_building' building.id %}"
+               class="btn btn-danger btn-sm">
+
+               Delete
+
+            </a>
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

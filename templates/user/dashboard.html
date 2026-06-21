@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>User Dashboard</h2>
+
+<div class="row">
+
+    <div class="col-md-4 mb-3">
+
+        <a href="/assets/search/"
+           class="btn btn-primary w-100 p-4">
+
+            Search Assets
+
+        </a>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <a href="/complaints/create/"
+           class="btn btn-warning w-100 p-4">
+
+            Raise Complaint
+
+        </a>
+
+    </div>
+
+    <div class="col-md-4 mb-3">
+
+        <a href="/complaints/my/"
+           class="btn btn-info w-100 p-4">
+
+            My Complaints
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

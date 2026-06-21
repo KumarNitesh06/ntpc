@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Update Complaint Status</h2>
+
+<p>
+
+<strong>Asset:</strong>
+
+{{ complaint.asset.item_name }}
+
+</p>
+
+<p>
+
+<strong>Description:</strong>
+
+{{ complaint.description }}
+
+</p>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button class="btn btn-success">
+
+        Save
+
+    </button>
+
+</form>
+<a href="/complaints/admin/"
+   class="btn btn-danger">
+
+    View Complaints
+
+</a>
+
+{% endblock %}
