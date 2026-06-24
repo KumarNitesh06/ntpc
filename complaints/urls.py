@@ -8,6 +8,11 @@ urlpatterns = [
         views.complaint_create,
         name='create_complaint'
     ),
+    path(
+        'my/',
+        views.my_complaints,
+        name='my_complaints'
+    ),
 
     path(
         'admin/',
@@ -20,4 +25,9 @@ urlpatterns = [
         views.update_status,
         name='update_status'
     ),
+    path(
+    'export/',
+    views.export_complaints_excel,
+    name='export_complaints_excel'
+),
 ]

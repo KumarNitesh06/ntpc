@@ -3,6 +3,12 @@
 {% block content %}
 
 <h2>Manage Assets</h2>
+<a href="{% url 'export_assets_excel' %}"
+   class="btn btn-success mb-3">
+
+   Export Assets to Excel
+
+</a>
 
 <a href="{% url 'add_asset' %}"
    class="btn btn-success mb-3">
@@ -44,12 +50,13 @@
 
 </a>
 
-        <a href="{% url 'delete_asset' asset.id %}"
-           class="btn btn-danger btn-sm">
+       <a href="{% url 'delete_asset' asset.id %}"
+   class="btn btn-danger btn-sm"
+   onclick="return confirm('Are you sure you want to delete this asset?');">
 
-            Delete
+   Delete
 
-        </a>
+</a>
 
     </td>
 

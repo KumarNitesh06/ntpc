@@ -73,4 +73,9 @@ path(
     views.delete_building,
     name='delete_building'
 ),
+path(
+    'export/',
+    views.export_assets_excel,
+    name='export_assets_excel'
+),
 ]

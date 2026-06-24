@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-
+from django.http import HttpResponse
+import openpyxl
 from .forms import ComplaintForm
 from .models import Complaint
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.admin.views.decorators import staff_member_required
-
+from django.views.decorators.cache import never_cache
 from .models import Complaint
 from .forms import ComplaintForm, ComplaintStatusForm
 
@@ -113,3 +114,72 @@ def update_status(request, complaint_id):
             'complaint': complaint
         }
     )
+@never_cache
+@login_required(login_url='/login/')
+def export_complaints_excel(request):
+
+    if not request.user.is_superuser:
+        return redirect('user_dashboard')
+
+    workbook = openpyxl.Workbook()
+
+    sheet = workbook.active
+    sheet.title = "Complaints"
+
+    headers = [
+        'Employee',
+        'Asset',
+        'Description',
+        'Status',
+        'Date'
+    ]
+
+    for col_num, header in enumerate(headers, 1):
+        sheet.cell(
+            row=1,
+            column=col_num
+        ).value = header
+
+    complaints = Complaint.objects.all()
+
+    for row_num, complaint in enumerate(
+        complaints,
+        2
+    ):
+
+        sheet.cell(
+            row=row_num,
+            column=1
+        ).value = complaint.user.first_name
+
+        sheet.cell(
+            row=row_num,
+            column=2
+        ).value = complaint.asset.item_name
+
+        sheet.cell(
+            row=row_num,
+            column=3
+        ).value = complaint.description
+
+        sheet.cell(
+            row=row_num,
+            column=4
+        ).value = complaint.status
+
+        sheet.cell(
+            row=row_num,
+            column=5
+        ).value = str(complaint.created_at)
+
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+    response[
+        'Content-Disposition'
+    ] = 'attachment; filename=complaints.xlsx'
+
+    workbook.save(response)
+
+    return response

@@ -1,3 +1,5 @@
+from django.http import HttpResponse
+import openpyxl
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
@@ -8,7 +10,7 @@ from .forms import AssetForm, DepartmentForm, BuildingForm
 
 
 @never_cache
-@login_required(login_url='/login/')
+@login_required(login_url='login')
 def asset_search(request):
 
     departments = Department.objects.all()
@@ -18,6 +20,8 @@ def asset_search(request):
 
     department_id = request.GET.get('department')
     building_id = request.GET.get('building')
+    item_id = request.GET.get('item_id')
+    item_name = request.GET.get('item_name')
 
     if department_id:
         assets = assets.filter(
@@ -27,6 +31,16 @@ def asset_search(request):
     if building_id:
         assets = assets.filter(
             building_id=building_id
+        )
+
+    if item_id:
+        assets = assets.filter(
+            item_id__icontains=item_id
+        )
+
+    if item_name:
+        assets = assets.filter(
+            item_name__icontains=item_name
         )
 
     return render(
@@ -41,7 +55,7 @@ def asset_search(request):
 
 
 @never_cache
-@login_required(login_url='/login/')
+@login_required(login_url='login')
 def asset_detail(request, asset_id):
 
     asset = get_object_or_404(
@@ -64,7 +78,7 @@ def asset_detail(request, asset_id):
 
 
 @never_cache
-@login_required(login_url='/login/')
+@login_required(login_url='login')
 def asset_list(request):
 
     if not request.user.is_superuser:
@@ -82,7 +96,7 @@ def asset_list(request):
 
 
 @never_cache
-@login_required(login_url='/login/')
+@login_required(login_url='login')
 def add_asset(request):
 
     if not request.user.is_superuser:
@@ -110,7 +124,7 @@ def add_asset(request):
         }
     )
 @never_cache
-@login_required(login_url='/login/')
+@login_required(login_url='login')
 def edit_asset(request, asset_id):
 
     if not request.user.is_superuser:
@@ -151,7 +165,7 @@ def edit_asset(request, asset_id):
 
 
 @never_cache
-@login_required(login_url='/login/')
+@login_required(login_url='login')
 def delete_asset(request, asset_id):
 
     if not request.user.is_superuser:
@@ -165,7 +179,7 @@ def delete_asset(request, asset_id):
 
 
 @never_cache
-@login_required(login_url='/login/')
+@login_required(login_url='login')
 def department_list(request):
 
     if not request.user.is_superuser:
@@ -183,7 +197,7 @@ def department_list(request):
 
 
 @never_cache
-@login_required(login_url='/login/')
+@login_required(login_url='login')
 def add_department(request):
 
     if not request.user.is_superuser:
@@ -213,7 +227,7 @@ def add_department(request):
 
 
 @never_cache
-@login_required(login_url='/login/')
+@login_required(login_url='login')
 def delete_department(request, department_id):
 
     if not request.user.is_superuser:
@@ -229,7 +243,7 @@ def delete_department(request, department_id):
 
 
 @never_cache
-@login_required(login_url='/login/')
+@login_required(login_url='login')
 def building_list(request):
 
     if not request.user.is_superuser:
@@ -247,7 +261,7 @@ def building_list(request):
 
 
 @never_cache
-@login_required(login_url='/login/')
+@login_required(login_url='login')
 def add_building(request):
 
     if not request.user.is_superuser:
@@ -277,7 +291,7 @@ def add_building(request):
 
 
 @never_cache
-@login_required(login_url='/login/')
+@login_required(login_url='login')
 def delete_building(request, building_id):
 
     if not request.user.is_superuser:
@@ -290,3 +304,74 @@ def delete_building(request, building_id):
     building.delete()
 
     return redirect('building_list')
+@never_cache
+@login_required(login_url='login')
+def export_assets_excel(request):
+
+    if not request.user.is_superuser:
+        return redirect('user_dashboard')
+
+    workbook = openpyxl.Workbook()
+
+    sheet = workbook.active
+
+    sheet.title = "Assets"
+
+    headers = [
+        'Asset ID',
+        'Asset Name',
+        'Category',
+        'Department',
+        'Building'
+    ]
+
+    for col_num, header in enumerate(headers, 1):
+        sheet.cell(
+            row=1,
+            column=col_num
+        ).value = header
+
+    assets = Asset.objects.all()
+
+    for row_num, asset in enumerate(
+        assets,
+        2
+    ):
+
+        sheet.cell(
+            row=row_num,
+            column=1
+        ).value = asset.item_id
+
+        sheet.cell(
+            row=row_num,
+            column=2
+        ).value = asset.item_name
+
+        sheet.cell(
+            row=row_num,
+            column=3
+        ).value = asset.category
+
+        sheet.cell(
+            row=row_num,
+            column=4
+        ).value = str(asset.department)
+
+        sheet.cell(
+            row=row_num,
+            column=5
+        ).value = str(asset.building)
+
+    response = HttpResponse(
+        content_type=
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+
+    response[
+        'Content-Disposition'
+    ] = 'attachment; filename=assets.xlsx'
+
+    workbook.save(response)
+
+    return response

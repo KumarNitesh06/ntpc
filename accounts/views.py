@@ -53,12 +53,13 @@ def login_view(request):
     return render(request, 'login.html')
 
 @never_cache
-@login_required
+@login_required(login_url='login')
+
 def user_dashboard(request):
     return render(request, 'user/dashboard.html')
 
 @never_cache
-@login_required(login_url='/login/')
+@login_required(login_url='login')
 def admin_dashboard(request):
 
     total_assets = Asset.objects.count()
@@ -93,7 +94,7 @@ def admin_dashboard(request):
         'admin/dashboard.html',
         context
     )
-
+@never_cache
 def logout_view(request):
 
     logout(request)
