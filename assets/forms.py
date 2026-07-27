@@ -1,6 +1,5 @@
 from django import forms
 from .models import Asset
-from django import forms
 from .models import Department, Building
 
 class DepartmentForm(forms.ModelForm):
@@ -28,3 +27,4 @@ class AssetForm(forms.ModelForm):
             'department',
             'building'
         ]
+        

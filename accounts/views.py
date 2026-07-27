@@ -54,10 +54,33 @@ def login_view(request):
 
 @never_cache
 @login_required(login_url='login')
-
 def user_dashboard(request):
-    return render(request, 'user/dashboard.html')
 
+    assets = Asset.objects.all().order_by('item_name')
+
+    total_assets = assets.count()
+
+    total_complaints = Complaint.objects.filter(
+        user=request.user
+    ).count()
+
+    resolved_complaints = Complaint.objects.filter(
+        user=request.user,
+        status='Resolved'
+    ).count()
+
+    context = {
+        'assets': assets,
+        'total_assets': total_assets,
+        'total_complaints': total_complaints,
+        'resolved_complaints': resolved_complaints,
+    }
+
+    return render(
+        request,
+        'user/dashboard.html',
+        context
+    )
 @never_cache
 @login_required(login_url='login')
 def admin_dashboard(request):

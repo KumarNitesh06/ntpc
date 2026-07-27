@@ -21,38 +21,60 @@
                 <th>Asset</th>
                 <th>Description</th>
                 <th>Status</th>
+                <th>Complaint Time</th>
                 <th>Photo</th>
                 <th>Action</th>
             </tr>
         </thead>
 
         <tbody>
-            {% for complaint in complaints %}
-            <tr>
-                <td>{{ complaint.user.first_name }}</td>
-                <td>{{ complaint.asset.item_name }}</td>
-                <td>{{ complaint.description }}</td>
-                <td>{{ complaint.status }}</td>
+{% for complaint in complaints %}
+<tr>
 
-                <td>
-                    {% if complaint.photo %}
-                        <a href="{{ complaint.photo.url }}" target="_blank">
-                            View
-                        </a>
-                    {% else %}
-                        No Photo
-                    {% endif %}
-                </td>
+    <td>{{ complaint.user.first_name }}</td>
 
-                <td>
-                    <a href="{% url 'update_status' complaint.id %}"
-                       class="btn btn-warning">
-                        Update
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
+    <td>{{ complaint.asset.item_name }}</td>
+
+    <td>{{ complaint.description }}</td>
+
+    <td>
+        <span class="badge
+            {% if complaint.status == 'Resolved' %}
+                bg-success
+            {% elif complaint.status == 'Pending' %}
+                bg-danger
+            {% else %}
+                bg-warning text-dark
+            {% endif %}">
+            {{ complaint.status }}
+        </span>
+    </td>
+
+    <td>
+        {{ complaint.created_at|date:"d M Y" }}<br>
+        <small class="text-muted">
+            {{ complaint.created_at|time:"h:i A" }}
+        </small>
+    </td>
+
+    <td>
+        {% if complaint.photo %}
+            <a href="{{ complaint.photo.url }}" target="_blank">View</a>
+        {% else %}
+            No Photo
+        {% endif %}
+    </td>
+
+    <td>
+        <a href="{% url 'update_status' complaint.id %}"
+           class="btn btn-warning">
+            Update
+        </a>
+    </td>
+
+</tr>
+{% endfor %}
+</tbody>
 
     </table>
 
