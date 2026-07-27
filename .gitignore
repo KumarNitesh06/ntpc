@@ -1,0 +1,5 @@
+venv
+accounts\__pycache__
+assets\__pycache__
+complaints\__pycache__
+config\__pycache__
